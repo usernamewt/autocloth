@@ -1,0 +1,176 @@
+<page-meta page-style="{{pageStyle}}" />
+<view class="page-root">
+<scroll-view class="main-scroll safe-area-bottom" scroll-y>
+
+  <!-- ── 形象照区 ── -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">形象照</text>
+      <view class="header-actions">
+        <view class="type-toggle" bindtap="onToggleType">
+          <text class="type-text">{{uploadType === 'full_body' ? '全身' : '半身'}}</text>
+        </view>
+        <view class="upload-btn {{uploading ? 'btn-disabled' : ''}}" bindtap="onChoosePhoto">
+          <text>{{uploading ? '上传中…' : '+ 上传'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{photos.length === 0}}" class="photos-empty">
+      <text class="photos-empty-text">上传一张形象照来试衣</text>
+    </view>
+
+    <scroll-view wx:else scroll-x class="photos-scroll" enable-flex>
+      <view class="photos-row">
+        <view
+          wx:for="{{photos}}"
+          wx:for-item="p"
+          wx:key="id"
+          class="photo-card {{selectedPhotoId === p.id ? 'photo-selected' : ''}}"
+          bindtap="onSelectPhoto"
+          data-id="{{p.id}}"
+        >
+          <image class="photo-img" src="{{p.image_url}}" mode="aspectFill" />
+          <view class="photo-label-wrap">
+            <text class="photo-label">{{p.photo_type === 'full_body' ? '全身' : '半身'}}</text>
+          </view>
+          <view class="photo-del" catchtap="onDeletePhoto" data-id="{{p.id}}">×</view>
+          <view wx:if="{{selectedPhotoId === p.id}}" class="photo-check">✓</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- ── 模式切换 ── -->
+  <view class="mode-tabs">
+    <view class="mode-tab {{mode === 'recommend' ? 'mode-tab-active' : ''}}" bindtap="setMode" data-mode="recommend">
+      <text>✨ AI 推荐</text>
+    </view>
+    <view class="mode-tab {{mode === 'manual' ? 'mode-tab-active' : ''}}" bindtap="setMode" data-mode="manual">
+      <text>👕 手动选衣</text>
+    </view>
+  </view>
+
+  <!-- ── AI 推荐模式 ── -->
+  <view wx:if="{{mode === 'recommend'}}" class="section">
+    <view class="form-row">
+      <text class="form-label">日期</text>
+      <picker mode="date" value="{{date}}" bindchange="onDateChange">
+        <view class="picker-val"><text>{{date}}</text><text class="picker-arrow">›</text></view>
+      </picker>
+    </view>
+    <view class="form-row form-row-wrap">
+      <text class="form-label">场合</text>
+      <view class="chips">
+        <view wx:for="{{occasions}}" wx:for-item="occ" wx:key="*this"
+          class="chip {{occasion === occ ? 'chip-active' : ''}}" bindtap="onOccasionTap" data-val="{{occ}}">
+          <text>{{occ}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="form-row">
+      <text class="form-label">天气</text>
+      <view class="input-wrap">
+        <input class="form-input" value="{{weatherDesc}}" placeholder="晴 25°C…（可选）" placeholder-class="form-placeholder" bindinput="onWeatherInput" confirm-type="done" />
+      </view>
+    </view>
+    <view class="btn-row">
+      <view class="btn-secondary {{recommending ? 'btn-disabled' : ''}}" bindtap="doRecommend">
+        <text>{{recommending ? 'AI 思考中…' : '� 获取穿搭推荐'}}</text>
+      </view>
+    </view>
+    <text wx:if="{{recError}}" class="rec-error">{{recError}}</text>
+
+    <!-- 推荐结果 -->
+    <view wx:if="{{recommendation}}" class="recommendation-box">
+      <text class="rec-name">{{recommendation.outfit_name}}</text>
+      <text class="rec-reason">{{recommendation.reasoning}}</text>
+      <view wx:if="{{recommendation.style_tips}}" class="style-tip">
+        <text>💡 {{recommendation.style_tips}}</text>
+      </view>
+      <view class="rec-items-row">
+        <view wx:for="{{recommendedItems}}" wx:for-item="it" wx:key="id" class="rec-item-thumb">
+          <image wx:if="{{it.thumbnail_url || it.image_url}}" class="rec-item-img" src="{{it.thumbnail_url || it.image_url}}" mode="aspectFill" />
+          <view wx:else class="rec-item-empty"><text>👕</text></view>
+          <text class="rec-item-name">{{it.name || it.taxonomy_type_label || it.type}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ── 手动选衣模式 ── -->
+  <view wx:if="{{mode === 'manual'}}" class="section">
+    <view class="section-sub-header">
+      <text class="section-subtitle">选择衣物（已选 {{selectedItemIds.length}} 件）</text>
+    </view>
+    <view wx:if="{{loadingItems}}" class="hint-text">加载中…</view>
+    <view wx:elif="{{allItems.length === 0}}" class="hint-text">衣橱中没有就绪的衣物</view>
+    <view wx:else class="items-grid">
+      <view
+        wx:for="{{allItems}}" wx:for-item="it" wx:key="id"
+        class="item-thumb {{it.selected ? 'item-thumb-selected' : ''}}"
+        bindtap="onToggleItem" data-id="{{it.id}}"
+      >
+        <image wx:if="{{it.imgUrl}}" class="item-thumb-img" src="{{it.imgUrl}}" mode="aspectFill" />
+        <view wx:else class="item-thumb-empty"><text>👕</text></view>
+        <text class="item-thumb-name">{{it.name}}</text>
+        <view wx:if="{{it.selected}}" class="item-check">✓</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ── 合成按钮 ── -->
+  <view class="section generate-section">
+    <view wx:if="{{!selectedPhotoId}}" class="hint-warn">⚠️ 请先在上方选择或上传形象照</view>
+    <view class="btn-primary btn-generate {{(generating || !selectedPhotoId) ? 'btn-disabled' : ''}}" bindtap="doGenerate">
+      <text>{{generating ? '合成中，请稍候…' : '👗 合成试衣效果'}}</text>
+    </view>
+  </view>
+
+  <!-- ── 合成进度 / 结果 ── -->
+  <view wx:if="{{generatingResultId}}" class="section result-section">
+    <text class="section-title">试衣效果</text>
+
+    <view wx:if="{{generateStatus === 'generating'}}" class="generating-hint">
+      <text class="spin">⏳</text>
+      <text class="generating-text">AI 合成中，通常需要 30~120 秒…</text>
+    </view>
+
+    <view wx:if="{{preprocessedImageUrl}}" class="preview-block">
+      <text class="preview-label">预处理合成图</text>
+      <image class="preview-img" src="{{preprocessedImageUrl}}" mode="widthFix" bindtap="onViewImage" data-url="{{preprocessedImageUrl}}" />
+    </view>
+
+    <view wx:if="{{generateStatus === 'ready' && resultImageUrl}}" class="preview-block">
+      <text class="preview-label">试衣结果 ✓</text>
+      <image class="preview-img result-img" src="{{resultImageUrl}}" mode="widthFix" bindtap="onViewImage" data-url="{{resultImageUrl}}" />
+      <text class="tap-hint">点击图片查看大图</text>
+    </view>
+
+    <view wx:if="{{generateStatus === 'error'}}" class="error-box">
+      <text class="error-text">合成失败：{{generateError}}</text>
+    </view>
+  </view>
+
+  <!-- ── 最近历史（最多4条） ── -->
+  <view wx:if="{{history.length}}" class="section">
+    <view class="section-header">
+      <text class="section-title">最近试衣</text>
+      <view class="more-btn" bindtap="goHistory"><text>查看全部 ›</text></view>
+    </view>
+    <view class="history-mini-list">
+      <view wx:for="{{history}}" wx:for-item="r" wx:key="id" class="history-mini-card">
+        <view class="history-mini-img-wrap" bindtap="onViewImage" data-url="{{r.result_image_url}}">
+          <image wx:if="{{r.result_image_url}}" class="history-mini-img" src="{{r.result_image_url}}" mode="aspectFill" />
+          <view wx:else class="history-mini-empty">
+            <text>{{r.status === 'generating' ? '⏳' : r.status === 'error' ? '⚠️' : '👗'}}</text>
+          </view>
+        </view>
+        <text class="history-mini-name">{{r.outfit_name || r.occasion || '试衣记录'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-gap"></view>
+</scroll-view>
+</view>

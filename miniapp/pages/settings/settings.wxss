@@ -1,0 +1,233 @@
+/* settings.wxss */
+
+.page-wrap {
+  height: 100vh;
+  background: var(--color-bg-subtle);
+  box-sizing: border-box;
+}
+
+/* ── 用户信息卡 ── */
+.profile-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 28rpx;
+  background: var(--color-nav);
+  padding: 40rpx 32rpx 48rpx;
+}
+
+.avatar-wrap {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow);
+}
+
+.avatar-text {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: var(--color-primary-fg);
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--color-fg);
+}
+
+.profile-email {
+  font-size: 24rpx;
+  color: var(--color-muted-fg);
+}
+
+/* ── 分区 ── */
+.section {
+  padding: 28rpx 24rpx 0;
+}
+
+.section-title {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: var(--color-muted-fg);
+  letter-spacing: 1rpx;
+  text-transform: uppercase;
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+/* ── 数据概览格 ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12rpx;
+}
+
+.stat-item {
+  background: var(--color-card);
+  border: 1rpx solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24rpx 8rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-num {
+  font-size: 40rpx;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.stat-label {
+  font-size: 20rpx;
+  color: var(--color-muted-fg);
+  text-align: center;
+}
+
+/* ── 列表卡片 ── */
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius);
+  border: 1rpx solid var(--color-border);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.row-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 32rpx;
+}
+
+.row-label {
+  font-size: 28rpx;
+  color: var(--color-muted-fg);
+}
+
+.row-value {
+  font-size: 28rpx;
+  color: var(--color-fg);
+  font-weight: 500;
+}
+
+.row-value.mono {
+  font-family: 'Courier New', monospace;
+  font-size: 24rpx;
+  color: var(--color-muted-fg);
+}
+
+.divider {
+  height: 1rpx;
+  background: var(--color-border);
+  margin: 0 32rpx;
+}
+
+/* ── 主题选择器 ── */
+.theme-grid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+.theme-card {
+  width: calc(50% - 8rpx);
+  background: var(--color-card);
+  border: 2rpx solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20rpx;
+  position: relative;
+  box-sizing: border-box;
+}
+.theme-card-active {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2rpx var(--color-primary);
+}
+.theme-swatches {
+  display: flex;
+  flex-direction: row;
+  gap: 8rpx;
+  margin-bottom: 12rpx;
+}
+.theme-dot {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  border: 1rpx solid rgba(0,0,0,.08);
+}
+.theme-name {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--color-fg);
+  display: block;
+}
+.theme-desc {
+  font-size: 22rpx;
+  color: var(--color-muted-fg);
+  display: block;
+  margin-top: 4rpx;
+}
+.theme-check {
+  position: absolute;
+  top: 12rpx;
+  right: 16rpx;
+  font-size: 28rpx;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* ── section header ── */
+.section-header { padding: 0 0 12rpx; }
+.section-desc { font-size: 22rpx; color: var(--color-muted-fg); display: block; margin-top: 4rpx; padding: 0 4rpx; }
+
+/* ── AI 穿搭闹钟 ── */
+.alarm-card { overflow: hidden; }
+.alarm-time-pick { display: flex; flex-direction: column; align-items: flex-end; }
+.alarm-time-val { font-size: 36rpx; font-weight: 700; color: var(--color-primary); }
+.alarm-time-hint { font-size: 20rpx; color: var(--color-muted-fg); margin-top: 2rpx; }
+
+.alarm-occasion-row { padding: 20rpx 28rpx; }
+.alarm-occasion-chips { display: flex; flex-direction: row; flex-wrap: wrap; gap: 12rpx; margin-top: 14rpx; }
+.occ-chip { padding: 10rpx 24rpx; border-radius: 999rpx; border: 2rpx solid var(--color-border); font-size: 26rpx; color: var(--color-muted-fg); background: var(--color-bg-subtle); }
+.occ-chip-active { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-primary-fg); font-weight: 700; }
+
+.alarm-actions { padding: 20rpx 28rpx; }
+.alarm-save-btn { background: var(--color-primary); border-radius: 999rpx; height: 88rpx; display: flex; align-items: center; justify-content: center; font-size: 30rpx; color: var(--color-primary-fg); font-weight: 700; }
+.alarm-save-btn.disabled { opacity: .5; }
+
+.alarm-toggle-row { display: flex; flex-direction: row; align-items: center; justify-content: space-between; }
+.alarm-status-label { display: flex; flex-direction: row; align-items: center; gap: 12rpx; }
+.alarm-dot { width: 16rpx; height: 16rpx; border-radius: 50%; }
+.dot-on { background: #22c55e; }
+.dot-off { background: var(--color-muted-fg); }
+.alarm-status-text { font-size: 26rpx; color: var(--color-fg); font-weight: 600; }
+.alarm-btns { display: flex; flex-direction: row; gap: 16rpx; }
+.alarm-toggle-btn { padding: 12rpx 28rpx; border: 2rpx solid var(--color-primary); border-radius: 999rpx; font-size: 26rpx; color: var(--color-primary); font-weight: 600; }
+.alarm-del-btn { padding: 12rpx 28rpx; border: 2rpx solid var(--color-border); border-radius: 999rpx; font-size: 26rpx; color: var(--color-muted-fg); }
+
+/* ── 退出按钮 ── */
+.logout-btn {
+  color: var(--color-destructive);
+  border-color: #f5c6c1;
+  background: #fef9f9;
+  font-weight: 500;
+  height: 88rpx;
+  border-radius: var(--radius);
+  font-size: 28rpx;
+}
+.logout-btn::after { border: none; }

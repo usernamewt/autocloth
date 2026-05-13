@@ -1,0 +1,141 @@
+<!-- item-create.wxml -->
+<page-meta page-style="{{pageStyle}}" />
+<scroll-view class="page-scroll safe-area-bottom" scroll-y>
+
+  <!-- ── 图片选择区 ── -->
+  <view class="img-section" bindtap="onChooseImage">
+    <image wx:if="{{previewUrl}}" class="preview-img" src="{{previewUrl}}" mode="aspectFit" />
+    <view wx:else class="img-placeholder">
+      <text class="img-placeholder-icon">📸</text>
+      <text class="img-placeholder-title">拍摄或选择衣物图片</text>
+      <text class="img-placeholder-desc">支持相机拍摄 · 从相册选取</text>
+    </view>
+    <view wx:if="{{previewUrl}}" class="reselect-badge">
+      <text>重新选图</text>
+    </view>
+  </view>
+
+  <view class="form-wrap">
+
+    <!-- ── 部位选择 ── -->
+    <view class="field-group">
+      <text class="field-label">衣物类型 <text class="required">*</text></text>
+      <view class="part-chips">
+        <view
+          wx:for="{{parts}}"
+          wx:for-item="p"
+          wx:key="value"
+          class="part-chip {{part === p.value ? 'part-chip-active' : ''}}"
+          bindtap="onPartTap"
+          data-val="{{p.value}}"
+        >
+          <text>{{p.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ── 名称（可选）── -->
+    <view class="field-group">
+      <text class="field-label">名称 <text class="optional">（可选，AI 会自动识别）</text></text>
+      <view class="input-box">
+        <input
+          class="field-input"
+          value="{{name}}"
+          placeholder="例如：白色衬衫"
+          placeholder-class="field-placeholder"
+          bindinput="onNameInput"
+          confirm-type="next"
+          disabled="{{status !== 'idle' && status !== 'error'}}"
+        />
+      </view>
+    </view>
+
+    <!-- ── 品牌（可选）── -->
+    <view class="field-group">
+      <text class="field-label">品牌 <text class="optional">（可选）</text></text>
+      <view class="input-box">
+        <input
+          class="field-input"
+          value="{{brand}}"
+          placeholder="例如：ZARA、优衣库"
+          placeholder-class="field-placeholder"
+          bindinput="onBrandInput"
+          confirm-type="done"
+          disabled="{{status !== 'idle' && status !== 'error'}}"
+        />
+      </view>
+    </view>
+
+    <!-- ── 提示 ── -->
+    <view class="ai-hint">
+      <text class="ai-hint-icon">✨</text>
+      <text class="ai-hint-text">上传后 AI 将自动抠图、替换白底，并识别颜色、材质等标签</text>
+    </view>
+
+    <!-- ── 提交按钮 ── -->
+    <view
+      class="submit-btn {{(!filePath || status === 'uploading' || status === 'processing' || status === 'classifying') ? 'submit-btn-disabled' : ''}}"
+      bindtap="submit"
+    >
+      <text>{{status === 'uploading' ? '上传中…' : status === 'processing' ? '处理中…' : status === 'classifying' ? '识别中…' : '开始录入'}}</text>
+    </view>
+
+    <!-- ── 进度状态区 ── -->
+    <view wx:if="{{status !== 'idle'}}" class="status-card {{status}}">
+
+      <!-- uploading -->
+      <view wx:if="{{status === 'uploading'}}" class="status-row">
+        <text class="status-spin">⏳</text>
+        <view class="status-texts">
+          <text class="status-title">正在上传图片</text>
+          <text class="status-desc">请勿关闭页面</text>
+        </view>
+      </view>
+
+      <!-- processing -->
+      <view wx:if="{{status === 'processing'}}" class="status-row">
+        <text class="status-spin">🎨</text>
+        <view class="status-texts">
+          <text class="status-title">AI 正在抠图处理</text>
+          <text class="status-desc">通常需要 10~30 秒，请耐心等待</text>
+          <view class="progress-bar-wrap">
+            <view class="progress-bar-track">
+              <view class="progress-bar-fill progress-animate"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- classifying -->
+      <view wx:if="{{status === 'classifying'}}" class="status-row">
+        <text class="status-spin">🤖</text>
+        <view class="status-texts">
+          <text class="status-title">AI 识别衣物分类中</text>
+          <text class="status-desc">即将跳转到衣物详情页…</text>
+        </view>
+      </view>
+
+      <!-- done -->
+      <view wx:if="{{status === 'done'}}" class="status-row">
+        <text class="status-done-icon">✅</text>
+        <view class="status-texts">
+          <text class="status-title">录入成功，正在跳转…</text>
+        </view>
+      </view>
+
+      <!-- error -->
+      <view wx:if="{{status === 'error'}}" class="status-row">
+        <text class="status-error-icon">⚠️</text>
+        <view class="status-texts">
+          <text class="status-title">录入失败</text>
+          <text class="status-desc">{{errorText}}</text>
+          <view class="retry-btn" bindtap="onRetry"><text>重新尝试</text></view>
+        </view>
+      </view>
+
+    </view>
+
+  </view>
+
+  <view class="bottom-gap"></view>
+</scroll-view>

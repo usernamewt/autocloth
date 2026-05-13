@@ -1,0 +1,140 @@
+<!-- items.wxml -->
+<page-meta page-style="{{pageStyle}}" />
+<view class="page-root">
+
+  <!-- ── 顶部搜索 + 筛选区 ── -->
+  <view class="top-bar">
+    <!-- 搜索框 + 录入按钮 -->
+    <view class="search-row">
+    <view class="search-wrap">
+      <text class="search-icon">🔍</text>
+      <input
+        class="search-input"
+        placeholder="搜索衣物名称、类型…"
+        placeholder-class="search-placeholder"
+        value="{{search}}"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+        confirm-type="search"
+      />
+      <text wx:if="{{search}}" class="search-clear" bindtap="onClearSearch">✕</text>
+    </view>
+    <view class="add-btn" bindtap="goAddItem">
+      <text class="add-btn-icon">+</text>
+      <text class="add-btn-text">录入</text>
+    </view>
+    </view>
+
+    <!-- 筛选 Tab -->
+    <view class="tab-bar">
+      <view
+        wx:for="{{tabs}}"
+        wx:key="key"
+        class="tab-item {{activeTab === item.key ? 'tab-active' : ''}}"
+        bindtap="onTabTap"
+        data-key="{{item.key}}"
+      >
+        <text class="tab-text">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ── 列表区 ── -->
+  <scroll-view
+    class="list-scroll"
+    scroll-y
+    refresher-enabled
+    refresher-background="#f5ede0"
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onRefresh"
+  >
+    <!-- 加载中骨架 -->
+    <view wx:if="{{loading && items.length === 0}}" class="two-col">
+      <view class="col">
+        <view wx:for="{{[1,2,3]}}" wx:key="*this" class="skeleton-card">
+          <view class="skeleton-img"></view>
+          <view class="skeleton-line w60"></view>
+          <view class="skeleton-line w40"></view>
+        </view>
+      </view>
+      <view class="col">
+        <view wx:for="{{[1,2,3]}}" wx:key="*this" class="skeleton-card">
+          <view class="skeleton-img"></view>
+          <view class="skeleton-line w60"></view>
+          <view class="skeleton-line w40"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:elif="{{!loading && items.length === 0}}" class="empty-state">
+      <text class="empty-icon">👗</text>
+      <text class="empty-title">衣橱还是空的</text>
+      <text class="empty-desc">点击右下角 + 按钮，开始录入你的第一件衣物</text>
+    </view>
+
+    <!-- 衣物网格：两列独立容器 -->
+    <view wx:else class="two-col">
+
+      <!-- 左列 -->
+      <view class="col">
+        <view
+          wx:for="{{leftItems}}"
+          wx:key="id"
+          class="item-card"
+          bindtap="onItemTap"
+          data-id="{{item.id}}"
+        >
+          <view class="item-img-wrap">
+            <image wx:if="{{item.showImage}}" class="item-img" src="{{item.imgUrl}}" mode="aspectFill" lazy-load />
+            <view wx:else class="item-img-placeholder"><text class="placeholder-icon">👕</text></view>
+            <text wx:if="{{item.favorite}}" class="fav-badge">★</text>
+            <view wx:if="{{item.isProcessing}}" class="processing-badge"><text class="processing-text">处理中</text></view>
+          </view>
+          <view class="item-info">
+            <text class="item-name">{{item.displayName}}</text>
+            <text wx:if="{{item.displayType}}" class="item-type">{{item.displayType}}</text>
+            <view wx:if="{{item.colorDots.length}}" class="color-dots">
+              <view wx:for="{{item.colorDots}}" wx:for-item="dot" wx:key="label" class="color-dot" style="background:{{dot.color}}"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 右列 -->
+      <view class="col">
+        <view
+          wx:for="{{rightItems}}"
+          wx:key="id"
+          class="item-card"
+          bindtap="onItemTap"
+          data-id="{{item.id}}"
+        >
+          <view class="item-img-wrap">
+            <image wx:if="{{item.showImage}}" class="item-img" src="{{item.imgUrl}}" mode="aspectFill" lazy-load />
+            <view wx:else class="item-img-placeholder"><text class="placeholder-icon">👕</text></view>
+            <text wx:if="{{item.favorite}}" class="fav-badge">★</text>
+            <view wx:if="{{item.isProcessing}}" class="processing-badge"><text class="processing-text">处理中</text></view>
+          </view>
+          <view class="item-info">
+            <text class="item-name">{{item.displayName}}</text>
+            <text wx:if="{{item.displayType}}" class="item-type">{{item.displayType}}</text>
+            <view wx:if="{{item.colorDots.length}}" class="color-dots">
+              <view wx:for="{{item.colorDots}}" wx:for-item="dot" wx:key="label" class="color-dot" style="background:{{dot.color}}"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+
+    <!-- 处理中提示 -->
+    <view wx:if="{{hasProcessing}}" class="processing-hint">
+      <text>⏳ 有衣物正在 AI 处理，将自动刷新</text>
+    </view>
+
+    <!-- 底部安全区撑高 -->
+    <view class="list-bottom-gap safe-area-bottom"></view>
+  </scroll-view>
+
+</view>

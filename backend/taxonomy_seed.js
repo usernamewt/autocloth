@@ -1,0 +1,290 @@
+/**
+ * 服装分类体系种子数据
+ * 结构: groups[] -> 每个 group 包含 terms[]，term 可嵌套 children[]（最多3级）
+ * is_basic: true 的为基础分类（优先展示），其余为详细属性（折叠展示）
+ * 被 POST /api/v1/taxonomy/seed 端点调用，为用户初始化系统分类
+ */
+module.exports = [
+  /* ===== 基础分类（sort 1-5）===== */
+  {
+    key_name: 'garment_type',
+    display_name: '服装品类',
+    sort_order: 1,
+    is_basic: true,
+    terms: [
+      {
+        key_name: 'tops', display_name: '上衣', children: [
+          { key_name: 'tops_tshirt', display_name: 'T恤类' },
+          { key_name: 'tops_shirt', display_name: '衬衫类' },
+          { key_name: 'tops_hoodie', display_name: '卫衣类' },
+          { key_name: 'tops_knit', display_name: '针织毛衣类' },
+          { key_name: 'tops_cami', display_name: '吊带背心类' },
+          { key_name: 'tops_base', display_name: '打底衫类' },
+          { key_name: 'tops_crop', display_name: '短款上衣' },
+        ],
+      },
+      {
+        key_name: 'bottoms', display_name: '下装', children: [
+          { key_name: 'bottoms_jeans', display_name: '牛仔裤' },
+          { key_name: 'bottoms_casual', display_name: '休闲裤' },
+          { key_name: 'bottoms_dress_pants', display_name: '西装裤' },
+          { key_name: 'bottoms_leggings', display_name: '打底裤' },
+          { key_name: 'bottoms_cargo', display_name: '工装裤' },
+          { key_name: 'bottoms_shorts', display_name: '短裤' },
+          { key_name: 'bottoms_skirt', display_name: '半身裙' },
+        ],
+      },
+      {
+        key_name: 'dresses', display_name: '裙装', children: [
+          { key_name: 'dresses_casual', display_name: '连衣裙' },
+          { key_name: 'dresses_formal', display_name: '礼服裙' },
+          { key_name: 'dresses_qipao', display_name: '旗袍类' },
+          { key_name: 'dresses_set', display_name: '套装裙' },
+        ],
+      },
+      {
+        key_name: 'outerwear', display_name: '外套', children: [
+          { key_name: 'outerwear_light', display_name: '轻薄外套' },
+          { key_name: 'outerwear_heavy', display_name: '厚款外套' },
+          { key_name: 'outerwear_warm', display_name: '保暖外套' },
+          { key_name: 'outerwear_vest', display_name: '马甲类' },
+        ],
+      },
+      {
+        key_name: 'underwear', display_name: '内衣家居', children: [
+          { key_name: 'underwear_bra', display_name: '文胸' },
+          { key_name: 'underwear_panties', display_name: '内裤' },
+          { key_name: 'underwear_thermal', display_name: '保暖内衣' },
+          { key_name: 'underwear_home', display_name: '睡衣家居' },
+        ],
+      },
+    ],
+  },
+  {
+    key_name: 'color',
+    display_name: '颜色',
+    sort_order: 2,
+    is_basic: true,
+    terms: [
+      { key_name: 'white', display_name: '白色' },
+      { key_name: 'black', display_name: '黑色' },
+      { key_name: 'gray', display_name: '灰色' },
+      { key_name: 'beige', display_name: '米色/卡其' },
+      { key_name: 'brown', display_name: '棕色/咖啡' },
+      { key_name: 'navy', display_name: '藏青/深蓝' },
+      { key_name: 'blue', display_name: '蓝色' },
+      { key_name: 'light_blue', display_name: '浅蓝/天蓝' },
+      { key_name: 'red', display_name: '红色' },
+      { key_name: 'pink', display_name: '粉色' },
+      { key_name: 'orange', display_name: '橙色' },
+      { key_name: 'yellow', display_name: '黄色' },
+      { key_name: 'green', display_name: '绿色' },
+      { key_name: 'olive', display_name: '军绿/墨绿' },
+      { key_name: 'purple', display_name: '紫色' },
+      { key_name: 'burgundy', display_name: '酒红/枣红' },
+      { key_name: 'gold', display_name: '金色' },
+      { key_name: 'silver', display_name: '银色' },
+      { key_name: 'multicolor', display_name: '多色/拼色' },
+      { key_name: 'floral', display_name: '碎花/印花' },
+      { key_name: 'stripe', display_name: '条纹' },
+      { key_name: 'plaid', display_name: '格子' },
+    ],
+  },
+  {
+    key_name: 'season',
+    display_name: '适用季节',
+    sort_order: 3,
+    is_basic: true,
+    terms: [
+      {
+        key_name: 'spring', display_name: '春季', children: [
+          { key_name: 'spring_mild', display_name: '气温10-20度' },
+          { key_name: 'spring_rainy', display_name: '阴雨潮湿' },
+        ],
+      },
+      {
+        key_name: 'summer', display_name: '夏季', children: [
+          { key_name: 'summer_hot', display_name: '高温酷暑' },
+          { key_name: 'summer_rainy', display_name: '雨季暴雨' },
+          { key_name: 'summer_ac', display_name: '空调房' },
+        ],
+      },
+      {
+        key_name: 'autumn', display_name: '秋季', children: [
+          { key_name: 'autumn_early', display_name: '初秋(20-28度)' },
+          { key_name: 'autumn_mid', display_name: '中秋(10-20度)' },
+          { key_name: 'autumn_late', display_name: '深秋(0-10度)' },
+        ],
+      },
+      {
+        key_name: 'winter', display_name: '冬季', children: [
+          { key_name: 'winter_mild', display_name: '微冷(0-10度)' },
+          { key_name: 'winter_cold', display_name: '严寒(-10~0度)' },
+          { key_name: 'winter_extreme', display_name: '极寒(-10度以下)' },
+          { key_name: 'winter_snow', display_name: '下雪结冰' },
+        ],
+      },
+      { key_name: 'all_season', display_name: '四季通用' },
+    ],
+  },
+  {
+    key_name: 'scene',
+    display_name: '穿着场景',
+    sort_order: 4,
+    is_basic: true,
+    terms: [
+      {
+        key_name: 'home', display_name: '日常居家', children: [
+          { key_name: 'home_pajamas', display_name: '居家睡衣' },
+          { key_name: 'home_casual', display_name: '家居服' },
+          { key_name: 'home_slippers', display_name: '居家拖鞋袜子' },
+        ],
+      },
+      {
+        key_name: 'work', display_name: '通勤职场', children: [
+          { key_name: 'work_formal', display_name: '正式商务' },
+          { key_name: 'work_smart', display_name: '轻商务通勤' },
+          { key_name: 'work_casual', display_name: '职场休闲' },
+        ],
+      },
+      { key_name: 'school', display_name: '校园学生' },
+      { key_name: 'date', display_name: '约会聚会' },
+      { key_name: 'travel', display_name: '旅游出游' },
+      {
+        key_name: 'sports', display_name: '运动健身', children: [
+          { key_name: 'sports_running', display_name: '跑步' },
+          { key_name: 'sports_yoga', display_name: '瑜伽普拉提' },
+          { key_name: 'sports_ball', display_name: '篮球足球' },
+          { key_name: 'sports_gym', display_name: '健身撸铁' },
+        ],
+      },
+      { key_name: 'banquet', display_name: '宴会正式' },
+      { key_name: 'outdoor_work', display_name: '户外劳作' },
+      { key_name: 'festival', display_name: '节日国风' },
+    ],
+  },
+  {
+    key_name: 'style',
+    display_name: '穿搭风格',
+    sort_order: 5,
+    is_basic: true,
+    terms: [
+      { key_name: 'minimal', display_name: '简约基础风' },
+      { key_name: 'korean', display_name: '韩系温柔风' },
+      { key_name: 'japanese', display_name: '日系森系风' },
+      { key_name: 'french', display_name: '法式复古风' },
+      { key_name: 'american', display_name: '美式休闲风' },
+      { key_name: 'chinese', display_name: '中式国风风' },
+      { key_name: 'luxury', display_name: '轻奢名媛风' },
+      { key_name: 'cute', display_name: '甜妹可爱风' },
+      { key_name: 'cool', display_name: '御姐高冷风' },
+      { key_name: 'workwear', display_name: '工装机能风' },
+      { key_name: 'relaxed', display_name: '慵懒松弛风' },
+      { key_name: 'sexy', display_name: '辣妹纯欲风' },
+    ],
+  },
+
+  /* ===== 详细属性（sort 6-11）===== */
+  {
+    key_name: 'gender',
+    display_name: '性别',
+    sort_order: 6,
+    terms: [
+      { key_name: 'male', display_name: '男装' },
+      { key_name: 'female', display_name: '女装' },
+      { key_name: 'unisex', display_name: '中性/情侣装' },
+      { key_name: 'plus_size', display_name: '大码加肥装' },
+      { key_name: 'petite', display_name: '小个子专属装' },
+    ],
+  },
+  {
+    key_name: 'age_group',
+    display_name: '年龄段',
+    sort_order: 7,
+    terms: [
+      { key_name: 'infant', display_name: '婴幼儿装(0-3岁)' },
+      { key_name: 'children', display_name: '童装(4-12岁)' },
+      { key_name: 'teenager', display_name: '青少年装(13-18岁)' },
+      { key_name: 'young_adult', display_name: '青年装(19-30岁)' },
+      { key_name: 'adult', display_name: '中青年装(31-45岁)' },
+      { key_name: 'middle_aged', display_name: '中年装(46-60岁)' },
+      { key_name: 'elderly', display_name: '老年装(60岁以上)' },
+    ],
+  },
+  {
+    key_name: 'sleeve_length',
+    display_name: '袖长',
+    sort_order: 8,
+    terms: [
+      { key_name: 'sleeveless', display_name: '无袖' },
+      { key_name: 'short_sleeve', display_name: '短袖' },
+      { key_name: 'three_quarter', display_name: '七分袖' },
+      { key_name: 'long_sleeve', display_name: '长袖' },
+      { key_name: 'puff_sleeve', display_name: '泡泡袖' },
+      { key_name: 'bell_sleeve', display_name: '喇叭袖' },
+    ],
+  },
+  {
+    key_name: 'neckline',
+    display_name: '领型',
+    sort_order: 9,
+    terms: [
+      { key_name: 'crew_neck', display_name: '圆领' },
+      { key_name: 'v_neck', display_name: 'V领' },
+      { key_name: 'square_neck', display_name: '方领' },
+      { key_name: 'turtleneck', display_name: '高领' },
+      { key_name: 'mock_neck', display_name: '半高领' },
+      { key_name: 'lapel', display_name: '翻领' },
+      { key_name: 'stand_collar', display_name: '立领' },
+      { key_name: 'peter_pan', display_name: '娃娃领' },
+      { key_name: 'polo', display_name: 'POLO领' },
+      { key_name: 'halter', display_name: '挂脖领' },
+      { key_name: 'off_shoulder', display_name: '一字肩领' },
+      { key_name: 'asymmetric', display_name: '斜领' },
+      { key_name: 'mandarin', display_name: '旗袍立领' },
+    ],
+  },
+  {
+    key_name: 'material',
+    display_name: '面料材质',
+    sort_order: 10,
+    terms: [
+      { key_name: 'cotton', display_name: '纯棉' },
+      { key_name: 'ice_silk', display_name: '冰丝' },
+      { key_name: 'de_velvet', display_name: '德绒' },
+      { key_name: 'sherpa', display_name: '羊羔绒' },
+      { key_name: 'coral_fleece', display_name: '珊瑚绒' },
+      { key_name: 'flannel', display_name: '法兰绒' },
+      { key_name: 'wool', display_name: '毛呢' },
+      { key_name: 'denim', display_name: '牛仔布' },
+      { key_name: 'suit_fabric', display_name: '西装料' },
+      { key_name: 'knit_cotton', display_name: '针织棉' },
+      { key_name: 'linen', display_name: '棉麻' },
+      { key_name: 'chiffon', display_name: '雪纺' },
+      { key_name: 'lace', display_name: '蕾丝' },
+      { key_name: 'mesh', display_name: '网纱' },
+      { key_name: 'polyester', display_name: '聚酯纤维' },
+      { key_name: 'quick_dry', display_name: '速干面料' },
+      { key_name: 'waterproof', display_name: '防水防风面料' },
+      { key_name: 'fur_leather', display_name: '皮毛一体' },
+      { key_name: 'down', display_name: '羽绒面料' },
+    ],
+  },
+  {
+    key_name: 'silhouette',
+    display_name: '廓形版型',
+    sort_order: 11,
+    terms: [
+      { key_name: 'slim', display_name: '修身紧身' },
+      { key_name: 'regular', display_name: '标准合身' },
+      { key_name: 'loose_straight', display_name: '宽松直筒' },
+      { key_name: 'oversize', display_name: 'Oversize落肩' },
+      { key_name: 'high_waist', display_name: '高腰收腰' },
+      { key_name: 'a_line', display_name: 'A字廓形' },
+      { key_name: 'h_line', display_name: 'H型直筒' },
+      { key_name: 'x_line', display_name: 'X型收腰显瘦' },
+      { key_name: 'cocoon', display_name: '茧型宽松' },
+      { key_name: 'drop_shoulder', display_name: '溜肩慵懒' },
+    ],
+  },
+]

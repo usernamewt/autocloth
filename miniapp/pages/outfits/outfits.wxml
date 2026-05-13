@@ -1,0 +1,157 @@
+<!-- outfits.wxml -->
+<page-meta page-style="{{pageStyle}}" />
+<view class="page-root">
+<scroll-view class="main-scroll safe-area-bottom" scroll-y>
+
+  <!-- ── 条件输入卡 ── -->
+  <view class="card-section">
+    <text class="section-title">推荐条件</text>
+
+    <!-- 日期 -->
+    <view class="form-row">
+      <text class="form-label">日期</text>
+      <picker mode="date" value="{{date}}" bindchange="onDateChange">
+        <view class="picker-val">
+          <text>{{date}}</text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 场合 chips -->
+    <view class="form-row form-row-wrap">
+      <text class="form-label">场合</text>
+      <view class="occasion-chips">
+        <view
+          wx:for="{{occasions}}"
+          wx:for-item="occ"
+          wx:key="*this"
+          class="occ-chip {{occasion === occ ? 'occ-chip-active' : ''}}"
+          bindtap="onOccasionTap"
+          data-val="{{occ}}"
+        >
+          <text>{{occ}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 天气 -->
+    <view class="form-row">
+      <text class="form-label">天气</text>
+      <view class="input-wrap">
+        <input
+          class="form-input"
+          value="{{weatherDesc}}"
+          placeholder="晴、25°C、微风（可选）"
+          placeholder-class="form-placeholder"
+          bindinput="onWeatherInput"
+          confirm-type="done"
+        />
+      </view>
+    </view>
+
+    <!-- 生成按钮 -->
+    <view class="generate-row">
+      <view class="btn-primary btn-generate {{recommending ? 'btn-disabled' : ''}}" bindtap="doRecommend">
+        <text>{{recommending ? 'AI 推荐中…' : '✨ 生成穿搭推荐'}}</text>
+      </view>
+      <text wx:if="{{recSaved}}" class="saved-hint">✓ 已保存到历史</text>
+    </view>
+    <text wx:if="{{recError}}" class="rec-error">{{recError}}</text>
+  </view>
+
+  <!-- ── 推荐结果 ── -->
+  <view wx:if="{{recommendation}}" class="card-section result-card">
+    <view class="result-header">
+      <view class="result-header-left">
+        <text class="result-name">{{recommendation.outfit_name}}</text>
+        <text class="result-reason">{{recommendation.reasoning}}</text>
+      </view>
+      <view class="btn-outline btn-sm" bindtap="doRecommend">
+        <text>换一套</text>
+      </view>
+    </view>
+
+    <!-- 风格提示 -->
+    <view wx:if="{{recommendation.style_tips}}" class="style-tip">
+      <text>💡 {{recommendation.style_tips}}</text>
+    </view>
+
+    <!-- 推荐单品 -->
+    <text class="sub-label">推荐单品（{{recommendedItems.length}} 件）</text>
+    <view wx:if="{{recommendedItems.length}}" class="items-grid">
+      <view
+        wx:for="{{recommendedItems}}"
+        wx:for-item="it"
+        wx:key="id"
+        class="item-card"
+        bindtap="onItemTap"
+        data-id="{{it.id}}"
+      >
+        <view class="item-img-wrap">
+          <image wx:if="{{it.thumbnail_url || it.image_url}}" class="item-img" src="{{it.thumbnail_url || it.image_url}}" mode="aspectFill" lazy-load />
+          <view wx:else class="item-img-empty"><text>👕</text></view>
+        </view>
+        <view class="item-info">
+          <text class="item-name">{{it.name || it.taxonomy_type_label || it.type || '未命名'}}</text>
+          <text wx:if="{{it.primary_color}}" class="item-color">{{it.primary_color}}</text>
+        </view>
+      </view>
+    </view>
+    <text wx:else class="no-items-hint">暂无可用单品，请先在「衣物」页面录入衣服</text>
+
+    <!-- 前往试衣间 -->
+    <view class="fitting-row">
+      <text class="fitting-hint">想看穿上的效果？</text>
+      <view class="btn-primary btn-sm" bindtap="goFitting">
+        <text>前往试衣间</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ── 空引导 ── -->
+  <view wx:elif="{{!recommending}}" class="empty-guide">
+    <text class="empty-icon">👗</text>
+    <text class="empty-title">还没有穿搭推荐</text>
+    <text class="empty-desc">设置日期和场合，让 AI 帮你搭配今天的衣橱</text>
+  </view>
+
+  <!-- ── 历史记录 ── -->
+  <view wx:if="{{history.length}}" class="card-section">
+    <text class="section-title">历史推荐记录</text>
+    <view class="history-list">
+      <view wx:for="{{history}}" wx:for-item="r" wx:key="id" class="history-card">
+        <!-- 结果图或占位 -->
+        <view class="history-img-wrap">
+          <image wx:if="{{r.result_image_url}}" class="history-img" src="{{r.result_image_url}}" mode="aspectFill" />
+          <view wx:else class="history-img-empty">
+            <text class="history-status-icon">{{r.statusIcon}}</text>
+            <text class="history-status-text">{{r.statusText}}</text>
+          </view>
+        </view>
+        <!-- 衣物缩略图行 -->
+        <view wx:if="{{r.thumbs.length}}" class="thumb-row">
+          <view wx:for="{{r.thumbs}}" wx:for-item="th" wx:key="id" class="thumb-item">
+            <image wx:if="{{th.imgUrl}}" class="thumb-img" src="{{th.imgUrl}}" mode="aspectFill" />
+            <view wx:else class="thumb-empty"></view>
+          </view>
+          <view wx:if="{{r.extraCount > 0}}" class="thumb-extra">
+            <text>+{{r.extraCount}}</text>
+          </view>
+        </view>
+        <!-- 文字信息 -->
+        <view class="history-info">
+          <text wx:if="{{r.outfit_name}}" class="history-name">{{r.outfit_name}}</text>
+          <view class="history-meta">
+            <text wx:if="{{r.occasion}}" class="meta-tag">{{r.occasion}}</text>
+            <text class="meta-date">{{r.fmtDate}}</text>
+          </view>
+          <text wx:if="{{r.reasoning}}" class="history-reason">{{r.reasoning}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-gap"></view>
+</scroll-view>
+</view>

@@ -1,0 +1,76 @@
+<!-- pages/login/login.wxml -->
+<view class="login-root safe-area-bottom">
+
+  <!-- 顶部品牌区 -->
+  <view class="brand">
+    <view class="brand-icon">👗</view>
+    <text class="brand-title">Wardrobe</text>
+    <text class="brand-sub">你的智能衣橱助手</text>
+  </view>
+
+  <!-- 登录卡片 -->
+  <view class="card login-card">
+    <view class="card-body col gap-24">
+
+      <!-- 邮箱 -->
+      <view class="input-group">
+        <text class="input-label">邮箱</text>
+        <view class="input-wrap {{focusField === 'email' ? 'input-wrap--focus' : ''}}">
+          <input
+            class="login-input"
+            type="text"
+            placeholder="you@example.com"
+            placeholder-class="input-placeholder"
+            value="{{email}}"
+            bindinput="onEmailInput"
+            bindfocus="onFocus"
+            bindblur="onBlur"
+            data-field="email"
+            confirm-type="next"
+          />
+        </view>
+      </view>
+
+      <!-- 昵称 -->
+      <view class="input-group">
+        <text class="input-label">昵称</text>
+        <view class="input-wrap {{focusField === 'nickname' ? 'input-wrap--focus' : ''}}">
+          <input
+            class="login-input"
+            type="text"
+            placeholder="你的昵称（可选）"
+            placeholder-class="input-placeholder"
+            value="{{nickname}}"
+            bindinput="onNicknameInput"
+            bindfocus="onFocus"
+            bindblur="onBlur"
+            data-field="nickname"
+            confirm-type="done"
+            bindconfirm="onLogin"
+          />
+        </view>
+      </view>
+
+      <!-- 错误提示 -->
+      <view wx:if="{{error}}" class="error-banner">
+        <text class="text-xs text-destructive">{{error}}</text>
+      </view>
+
+      <!-- 登录按钮 -->
+      <button
+        class="btn btn-primary btn-full btn-lg"
+        disabled="{{loading || !email}}"
+        bindtap="onLogin"
+        hover-class="btn-hover"
+      >
+        <text>{{loading ? '登录中…' : '登录 / 注册'}}</text>
+      </button>
+
+      <text class="text-xs text-muted text-center">
+        首次使用将自动注册账号
+      </text>
+
+    </view>
+  </view>
+
+</view>

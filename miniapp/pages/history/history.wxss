@@ -1,0 +1,71 @@
+/* history.wxss */
+
+.page-root { height: 100vh; background: var(--color-bg-subtle); display: flex; flex-direction: column; overflow: hidden; }
+.main-scroll { flex: 1; overflow: hidden; }
+
+/* loading / empty */
+.loading-wrap { flex: 1; display: flex; align-items: center; justify-content: center; }
+.loading-text { font-size: 28rpx; color: var(--color-muted-fg); }
+.empty-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16rpx; padding: 60rpx 40rpx; }
+.empty-icon { font-size: 96rpx; }
+.empty-title { font-size: 32rpx; font-weight: 700; color: var(--color-fg); }
+.empty-desc { font-size: 26rpx; color: var(--color-muted-fg); text-align: center; line-height: 1.5; }
+.btn-primary { background: var(--color-primary); border-radius: 999rpx; padding: 18rpx 48rpx; font-size: 28rpx; color: var(--color-primary-fg); font-weight: 600; margin-top: 8rpx; }
+
+/* 今日 banner */
+.today-banner {
+  display: flex; flex-direction: row; align-items: center; gap: 20rpx;
+  margin: 20rpx 0 0;
+  background: var(--color-primary); padding: 24rpx 28rpx;
+  border-bottom: 1rpx solid var(--color-border);
+}
+.today-banner-icon { font-size: 44rpx; flex-shrink: 0; }
+.today-banner-texts { flex: 1; }
+.today-banner-title { font-size: 22rpx; color: var(--color-primary-fg); opacity: .85; display: block; margin-bottom: 4rpx; }
+.today-banner-name { font-size: 28rpx; font-weight: 700; color: var(--color-primary-fg); display: block; }
+
+/* list */
+.list { padding: 16rpx 0; }
+
+/* card */
+.card {
+  background: var(--color-card);
+  margin: 0 0 16rpx;
+  border-top: 1rpx solid var(--color-border);
+  border-bottom: 1rpx solid var(--color-border);
+  overflow: hidden;
+}
+
+/* 图片 */
+.card-img-wrap { width: 100%; height: 520rpx; background: var(--color-muted); position: relative; }
+.card-img { width: 100%; height: 100%; }
+.card-img-empty {
+  width: 100%; height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 12rpx;
+  background: var(--color-bg-subtle);
+}
+.pure-rec { background: var(--color-muted); }
+.card-img-icon { font-size: 72rpx; }
+.card-img-label { font-size: 24rpx; color: var(--color-muted-fg); }
+
+/* 衣物缩略图 */
+.thumb-row { display: flex; flex-direction: row; flex-wrap: wrap; gap: 8rpx; padding: 12rpx 20rpx 0; }
+.thumb-item { width: 60rpx; height: 60rpx; border-radius: 8rpx; overflow: hidden; background: var(--color-muted); border: 1rpx solid var(--color-border); }
+.thumb-img { width: 100%; height: 100%; }
+.thumb-empty { width: 100%; height: 100%; background: var(--color-muted); }
+.thumb-extra { width: 60rpx; height: 60rpx; border-radius: 8rpx; background: var(--color-muted); display: flex; align-items: center; justify-content: center; font-size: 20rpx; color: var(--color-muted-fg); border: 1rpx solid var(--color-border); }
+
+/* body */
+.card-body { padding: 16rpx 24rpx 20rpx; }
+.card-name { font-size: 30rpx; font-weight: 700; color: var(--color-fg); display: block; margin-bottom: 8rpx; }
+.card-meta { display: flex; flex-direction: row; align-items: center; gap: 10rpx; flex-wrap: wrap; margin-bottom: 10rpx; }
+.meta-tag { font-size: 22rpx; background: var(--color-muted); border-radius: 999rpx; padding: 4rpx 16rpx; color: var(--color-muted-fg); }
+.meta-date { font-size: 22rpx; color: var(--color-muted-fg); }
+.card-reason { font-size: 26rpx; color: var(--color-muted-fg); display: block; line-height: 1.6; margin-bottom: 6rpx; }
+.card-tips { font-size: 24rpx; color: var(--color-muted-fg); display: block; line-height: 1.5; font-style: italic; margin-bottom: 8rpx; }
+
+.card-footer { display: flex; flex-direction: row; align-items: center; justify-content: space-between; margin-top: 12rpx; padding-top: 12rpx; border-top: 1rpx solid var(--color-border); }
+.card-time { font-size: 22rpx; color: var(--color-muted-fg); }
+.del-btn { padding: 6rpx 20rpx; border: 1rpx solid var(--color-border); border-radius: 999rpx; font-size: 22rpx; color: var(--color-muted-fg); }
+
+.bottom-gap { height: 40rpx; }

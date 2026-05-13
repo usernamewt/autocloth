@@ -1,0 +1,200 @@
+<!-- item-detail.wxml -->
+<page-meta page-style="{{pageStyle}}" />
+<view class="page-root safe-area-bottom">
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-wrap">
+    <view class="loading-skeleton">
+      <view class="sk-img"></view>
+      <view class="sk-body">
+        <view class="sk-line w70"></view>
+        <view class="sk-line w50"></view>
+        <view class="sk-line w40"></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 错误 -->
+  <view wx:elif="{{error}}" class="error-wrap">
+    <text class="error-text">{{error}}</text>
+    <button class="btn btn-outline btn-sm" bindtap="load" data-id="{{id}}">重试</button>
+  </view>
+
+  <!-- 主内容 -->
+  <scroll-view wx:elif="{{item}}" class="detail-scroll" scroll-y>
+
+    <!-- ── Hero 图片 ── -->
+    <view class="hero-wrap">
+      <image
+        wx:if="{{item.image_url || item.thumbnail_url}}"
+        class="hero-img"
+        src="{{item.image_url || item.thumbnail_url}}"
+        mode="widthFix"
+      />
+      <view wx:else class="hero-placeholder">
+        <text class="hero-placeholder-icon">👕</text>
+      </view>
+      <!-- 处理中遮罩 -->
+      <view wx:if="{{item.status === 'processing'}}" class="hero-overlay">
+        <text class="hero-overlay-text">⏳ 处理中</text>
+      </view>
+    </view>
+
+    <!-- ── 信息区（内联编辑）── -->
+    <view class="info-section">
+
+      <!-- 名称（直接可编辑） -->
+      <view class="name-edit-row">
+        <input
+          class="name-input"
+          value="{{nameValue}}"
+          placeholder="点击输入名称"
+          placeholder-class="name-input-placeholder"
+          bindinput="onNameInput"
+          bindblur="onNameBlur"
+          confirm-type="done"
+          bindconfirm="onNameBlur"
+        />
+        <view class="status-badge status-{{statusClass}}">
+          <text class="status-text">{{statusLabel}}</text>
+        </view>
+      </view>
+
+      <!-- 品牌 -->
+      <view class="field-row">
+        <text class="field-key">品牌</text>
+        <input
+          class="field-input"
+          value="{{brandValue}}"
+          placeholder="未设置"
+          placeholder-class="field-placeholder"
+          bindinput="onBrandInput"
+          bindblur="onBrandBlur"
+          confirm-type="done"
+          bindconfirm="onBrandBlur"
+        />
+      </view>
+
+      <!-- 备注 -->
+      <view class="field-row field-row-notes">
+        <text class="field-key">备注</text>
+        <textarea
+          class="field-textarea"
+          value="{{notesValue}}"
+          placeholder="添加备注…"
+          placeholder-class="field-placeholder"
+          bindinput="onNotesInput"
+          bindblur="onNotesBlur"
+          auto-height
+          maxlength="200"
+        />
+      </view>
+
+      <!-- 统计行 -->
+      <view class="stats-row">
+        <view class="stat-chip">
+          <text class="stat-chip-num">{{item.wear_count || 0}}</text>
+          <text class="stat-chip-label">穿着</text>
+        </view>
+        <view class="stat-chip">
+          <text class="stat-chip-num">{{item.suggestion_count || 0}}</text>
+          <text class="stat-chip-label">推荐</text>
+        </view>
+      </view>
+
+      <!-- 操作按钮行 -->
+      <view class="action-row">
+        <view class="action-btn {{item.favorite ? 'action-fav-on' : 'action-fav'}}" bindtap="onToggleFavorite">
+          <text>{{item.favorite ? '★ 已收藏' : '☆ 收藏'}}</text>
+        </view>
+        <view class="action-btn action-wear" bindtap="onWear">
+          <text>{{wearing ? '记录中…' : '穿着一次'}}</text>
+        </view>
+        <view class="action-btn {{item.needs_wash ? 'action-wash-on' : 'action-wash'}}" bindtap="onToggleNeedsWash">
+          <text>{{item.needs_wash ? '🧺 待清洗' : '✓ 已干净'}}</text>
+        </view>
+        <view class="action-btn action-delete" bindtap="onDelete">
+          <text>{{deleting ? '删除中…' : '删除'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ── 颜色色块 ── -->
+    <view wx:if="{{colorSwatches.length}}" class="card-section">
+      <text class="section-label">颜色</text>
+      <view class="swatches-row">
+        <view wx:for="{{colorSwatches}}" wx:for-item="swatch" wx:key="id" class="swatch-item">
+          <view class="swatch" style="background:{{swatch.swatchColor}}"></view>
+          <text class="swatch-name">{{swatch.display_name}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ── AI 标签 ── -->
+    <view wx:if="{{tagList.length}}" class="card-section">
+      <text class="section-label">AI 识别标签</text>
+      <view class="tags-wrap">
+        <view wx:for="{{tagList}}" wx:for-item="tag" wx:key="*this" class="tag-chip">
+          <text class="tag-text">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- ── 基础分类 ── -->
+    <view class="card-section">
+      <view class="section-header-row">
+        <text class="section-label">基础分类</text>
+        <view class="section-actions">
+          <view class="mini-btn {{aiClassifying ? 'mini-btn-disabled' : ''}}" bindtap="onAiClassify">
+            <text>{{aiClassifying ? 'AI识别中…' : '🤖 AI分类'}}</text>
+          </view>
+          <view class="mini-btn mini-btn-primary {{savingTaxonomy ? 'mini-btn-disabled' : ''}}" bindtap="onSaveTaxonomy">
+            <text>{{savingTaxonomy ? '保存中…' : '保存'}}</text>
+          </view>
+        </view>
+      </view>
+      <text wx:if="{{taxonomyMsg}}" class="taxonomy-msg">{{taxonomyMsg}}</text>
+
+      <view wx:for="{{basicGroups}}" wx:for-item="group" wx:key="id" class="taxonomy-group">
+        <text class="group-label">{{group.display_name}}</text>
+        <view class="terms-wrap">
+          <view
+            wx:for="{{group.terms}}"
+            wx:for-item="term"
+            wx:key="id"
+            class="term-chip {{term.selected ? 'term-selected' : ''}}"
+            bindtap="onToggleTerm"
+            data-id="{{term.id}}"
+          >
+            <text class="term-text">{{term.depth > 0 ? '· ' : ''}}{{term.display_name}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 详细属性 折叠 -->
+      <view wx:if="{{advancedGroups.length}}" class="advanced-toggle" bindtap="toggleAdvanced">
+        <text class="advanced-toggle-text">详细属性 {{showAdvanced ? '▲' : '▼'}}</text>
+      </view>
+      <view wx:if="{{showAdvanced}}">
+        <view wx:for="{{advancedGroups}}" wx:for-item="group" wx:key="id" class="taxonomy-group">
+          <text class="group-label">{{group.display_name}}</text>
+          <view class="terms-wrap">
+            <view
+              wx:for="{{group.terms}}"
+              wx:for-item="term"
+              wx:key="id"
+              class="term-chip {{term.selected ? 'term-selected' : ''}}"
+              bindtap="onToggleTerm"
+              data-id="{{term.id}}"
+            >
+              <text class="term-text">{{term.depth > 0 ? '· ' : ''}}{{term.display_name}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="bottom-gap"></view>
+  </scroll-view>
+
+</view>

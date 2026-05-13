@@ -1,0 +1,75 @@
+/* pages/login/login.wxss */
+
+.login-root {
+  min-height: 100vh;
+  background: var(--color-bg-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48rpx 40rpx;
+  box-sizing: border-box;
+  /* 顶部延伸到导航栏同色 */
+  background: linear-gradient(180deg, #F5EDE0 0%, #f8f2ea 40%, #fdfaf7 100%);
+}
+
+/* 品牌区 */
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 56rpx;
+}
+.brand-icon {
+  font-size: 88rpx;
+  margin-bottom: 16rpx;
+}
+.brand-title {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 2rpx;
+}
+.brand-sub {
+  font-size: 26rpx;
+  color: var(--color-muted-fg);
+  margin-top: 8rpx;
+}
+
+/* 登录卡片 */
+.login-card {
+  width: 100%;
+  max-width: 680rpx;
+}
+
+/* 输入框聚焦态 */
+.input-wrap--focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 4rpx rgba(184,152,107,.15);
+}
+
+.login-input {
+  flex: 1;
+  height: 80rpx;
+  font-size: 28rpx;
+  color: var(--color-fg);
+  background: transparent;
+}
+
+.input-placeholder {
+  color: var(--color-muted-fg);
+  font-size: 28rpx;
+}
+
+/* 错误提示 */
+.error-banner {
+  background: #fef2f2;
+  border: 1rpx solid #fecaca;
+  border-radius: var(--radius-sm);
+  padding: 16rpx 20rpx;
+}
+
+/* 按钮悬停态 */
+.btn-hover {
+  opacity: 0.85;
+}

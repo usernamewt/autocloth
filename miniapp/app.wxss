@@ -1,0 +1,207 @@
+/**app.wxss — 全局样式 & 设计系统**/
+
+/* ── 设计 Token — 暖香槟 × 拿铁棕 高级衣橱风 ── */
+page {
+  /* 背景层 */
+  --color-bg: #fdfaf7;
+  --color-bg-subtle: #f5ede0;
+  --color-nav: #f5ede0;
+
+  /* 前景 / 文字 */
+  --color-fg: #2c1a0e;
+  --color-muted: #ede3d8;
+  --color-muted-fg: #8a7060;
+
+  /* 边框 */
+  --color-border: #dccfbf;
+
+  /* 主色（深棕/可可） */
+  --color-primary: #5c3d2e;
+  --color-primary-fg: #fdfaf7;
+
+  /* 金色点缀 */
+  --color-accent: #b8986b;
+  --color-accent-fg: #fdfaf7;
+
+  /* 卡片 */
+  --color-card: #fdfaf7;
+
+  /* 功能色 */
+  --color-destructive: #c0392b;
+  --color-success: #4a7c59;
+
+  /* 圆角 */
+  --radius-sm: 8rpx;
+  --radius: 16rpx;
+  --radius-lg: 24rpx;
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 4px rgba(92,61,46,.06);
+  --shadow: 0 4px 16px rgba(92,61,46,.10);
+  --shadow-lg: 0 8px 32px rgba(92,61,46,.14);
+
+  background-color: var(--color-bg-subtle);
+  color: var(--color-fg);
+  font-size: 28rpx;
+  font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+/* ── iOS 安全区辅助类 ── */
+.safe-area-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.safe-area-top {
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+}
+
+/* ── 通用布局 ── */
+.page-container {
+  min-height: 100vh;
+  background: var(--color-bg-subtle);
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.page-body {
+  padding: 24rpx;
+}
+.row { display: flex; flex-direction: row; align-items: center; }
+.col { display: flex; flex-direction: column; }
+.flex-1 { flex: 1; }
+.gap-12 { gap: 12rpx; }
+.gap-16 { gap: 16rpx; }
+.gap-24 { gap: 24rpx; }
+
+/* ── 卡片 ── */
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  border: 1rpx solid var(--color-border);
+  overflow: hidden;
+}
+.card-body { padding: 32rpx; }
+.card-section { padding: 24rpx 32rpx; }
+
+/* ── 按钮 ── */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  border-radius: var(--radius);
+  font-size: 28rpx;
+  font-weight: 600;
+  padding: 0 32rpx;
+  box-sizing: border-box;
+  border: none;
+  background: none;
+}
+.btn::after { border: none; }
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+}
+.btn-primary[disabled] { opacity: 0.5; }
+.btn-outline {
+  background: transparent;
+  color: var(--color-fg);
+  border: 1rpx solid var(--color-border);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--color-muted-fg);
+}
+.btn-destructive {
+  background: var(--color-destructive);
+  color: #fff;
+}
+.btn-sm { height: 64rpx; font-size: 24rpx; padding: 0 24rpx; }
+.btn-lg { height: 96rpx; font-size: 32rpx; }
+.btn-full { width: 100%; }
+
+/* ── 输入框 ── */
+.input-wrap {
+  background: var(--color-bg);
+  border: 1rpx solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0 24rpx;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+.input-wrap input {
+  flex: 1;
+  font-size: 28rpx;
+  color: var(--color-fg);
+  background: transparent;
+}
+.input-label {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: var(--color-fg);
+  margin-bottom: 10rpx;
+}
+.input-group { display: flex; flex-direction: column; }
+
+/* ── 标签 / 徽章 ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4rpx 14rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  background: var(--color-muted);
+  color: var(--color-muted-fg);
+}
+.badge-primary { background: var(--color-primary); color: var(--color-primary-fg); }
+
+/* ── 分割线 ── */
+.divider {
+  height: 1rpx;
+  background: var(--color-border);
+  margin: 16rpx 0;
+}
+
+/* ── 文字工具类 ── */
+.text-xs { font-size: 22rpx; }
+.text-sm { font-size: 24rpx; }
+.text-base { font-size: 28rpx; }
+.text-lg { font-size: 32rpx; }
+.text-xl { font-size: 36rpx; }
+.text-2xl { font-size: 44rpx; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+.text-muted { color: var(--color-muted-fg); }
+.text-primary { color: var(--color-primary); }
+.text-destructive { color: var(--color-destructive); }
+.text-success { color: var(--color-success); }
+.text-center { text-align: center; }
+.truncate { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+/* ── 空状态 ── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 48rpx;
+  text-align: center;
+}
+.empty-state .icon { font-size: 80rpx; margin-bottom: 16rpx; }
+.empty-state .title { font-size: 30rpx; font-weight: 600; margin-bottom: 8rpx; }
+.empty-state .desc { font-size: 26rpx; color: var(--color-muted-fg); margin-bottom: 32rpx; }
+
+/* ── 加载状态 ── */
+.loading-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx;
+}
+

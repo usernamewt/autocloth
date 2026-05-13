@@ -1,0 +1,152 @@
+<page-meta page-style="{{pageStyle}}" />
+<scroll-view class="page-wrap safe-area-bottom" scroll-y>
+
+  <!-- 用户信息卡 -->
+  <view class="profile-card">
+    <view class="avatar-wrap">
+      <text class="avatar-text">{{avatarLetter}}</text>
+    </view>
+    <view class="profile-info">
+      <text class="profile-name">{{user.display_name || '未设置昵称'}}</text>
+      <text class="profile-email">{{user.email || ''}}</text>
+    </view>
+  </view>
+
+  <!-- 数据概览 -->
+  <view class="section">
+    <text class="section-title">数据概览</text>
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-num">{{statsLoading ? '…' : stats.total}}</text>
+        <text class="stat-label">衣物总数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-num">{{statsLoading ? '…' : stats.favorites}}</text>
+        <text class="stat-label">已收藏</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-num">{{statsLoading ? '…' : stats.needsWash}}</text>
+        <text class="stat-label">待清洗</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-num">{{statsLoading ? '…' : stats.wardrobes}}</text>
+        <text class="stat-label">衣橱数量</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 账号详情 -->
+  <view class="section">
+    <text class="section-title">账号信息</text>
+    <view class="card">
+      <view class="row-item">
+        <text class="row-label">用户 ID</text>
+        <text class="row-value mono">{{userIdShort}}</text>
+      </view>
+      <view class="divider"></view>
+      <view class="row-item">
+        <text class="row-label">注册时间</text>
+        <text class="row-value">{{registeredAt}}</text>
+      </view>
+      <view class="divider"></view>
+      <view class="row-item">
+        <text class="row-label">引导完成</text>
+        <text class="row-value">{{user.onboarding_completed ? '✓ 已完成' : '未完成'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 主题风格 -->
+  <view class="section">
+    <text class="section-title">主题风格</text>
+    <view class="theme-grid">
+      <view
+        wx:for="{{themeList}}"
+        wx:for-item="t"
+        wx:key="key"
+        class="theme-card {{currentTheme === t.key ? 'theme-card-active' : ''}}"
+        bindtap="onSelectTheme"
+        data-key="{{t.key}}"
+      >
+        <view class="theme-swatches">
+          <view wx:for="{{t.preview}}" wx:for-item="c" wx:key="*this" class="theme-dot" style="background:{{c}}"></view>
+        </view>
+        <text class="theme-name">{{t.name}}</text>
+        <text class="theme-desc">{{t.desc}}</text>
+        <view wx:if="{{currentTheme === t.key}}" class="theme-check">✓</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- AI 穿搭闹钟 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">穿搭闹钟</text>
+      <text class="section-desc">设定出门时间，系统提前5分钟自动备好今日穿搭</text>
+    </view>
+    <view class="card alarm-card">
+
+      <!-- 时间选择行 -->
+      <view class="row-item">
+        <text class="row-label">出门时间</text>
+        <picker mode="time" value="{{alarmTime}}" bindchange="onAlarmTimeChange">
+          <view class="alarm-time-pick">
+            <text class="alarm-time-val">{{alarmTime}}</text>
+            <text class="alarm-time-hint">出门前5分钟自动生成</text>
+          </view>
+        </picker>
+      </view>
+
+      <view class="divider"></view>
+
+      <!-- 场合选择行 -->
+      <view class="alarm-occasion-row">
+        <text class="row-label">出行场合</text>
+        <view class="alarm-occasion-chips">
+          <view
+            wx:for="{{occasionList}}"
+            wx:for-item="occ"
+            wx:key="*this"
+            class="occ-chip {{alarmOccasion === occ ? 'occ-chip-active' : ''}}"
+            bindtap="onAlarmOccasionTap"
+            data-val="{{occ}}"
+          ><text>{{occ}}</text></view>
+        </view>
+      </view>
+
+      <view class="divider"></view>
+
+      <!-- 操作行 -->
+      <view class="alarm-actions">
+        <view wx:if="{{!alarmExists}}" class="alarm-save-btn {{alarmSaving ? 'disabled' : ''}}" bindtap="saveAlarm">
+          <text>{{alarmSaving ? '保存中…' : '开启闹钟'}}</text>
+        </view>
+        <view wx:else class="alarm-toggle-row">
+          <view class="alarm-status-label">
+            <text class="alarm-dot {{alarmEnabled ? 'dot-on' : 'dot-off'}}"></text>
+            <text class="alarm-status-text">{{alarmEnabled ? '运行中' : '已暂停'}}</text>
+          </view>
+          <view class="alarm-btns">
+            <view class="alarm-toggle-btn" bindtap="onAlarmToggle">
+              <text>{{alarmEnabled ? '暂停' : '恢复'}}</text>
+            </view>
+            <view class="alarm-del-btn" bindtap="deleteAlarm">
+              <text>删除</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="section">
+    <button class="btn btn-outline btn-full logout-btn" bindtap="onLogout">
+      退出登录
+    </button>
+  </view>
+
+  <view style="height:40rpx"></view>
+</scroll-view>
+
