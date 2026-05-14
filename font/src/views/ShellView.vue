@@ -83,6 +83,7 @@
         </main>
       </div>
     </div>
+    <AgentOverlay />
   </div>
 </template>
 
@@ -90,6 +91,7 @@
 import { ref } from 'vue'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import AgentOverlay from '@/components/AgentOverlay.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
